@@ -100,14 +100,14 @@ def training(starting_data):
                 running_loss = 0.0
 
     print('##Finished Training##')
-    PATH = './cifar_net.pth'
+    PATH = './cifar10_model.pth'
     torch.save(net.state_dict(), PATH)
     print('##Training saved##')
 
 
 def testing(starting_data):
     print('## start testing ##')
-    PATH = './cifar_net.pth'
+    PATH = './cifar10_model.pth'
     classes, trainset, trainloader, testset, testloader = starting_data
     dataiter = iter(testloader)
     images, labels = dataiter.next()
@@ -153,16 +153,14 @@ def testing(starting_data):
 '''
 START CODE
 '''
-
-
 starting_data = start_classifier()
 '''
 Entrnamiento de la red
 '''
-# training(starting_data)
+training(starting_data)
 
 '''
 Testeo del entrenamiento
 '''
-testing(starting_data)
+# testing(starting_data)
 
