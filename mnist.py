@@ -14,11 +14,16 @@ class Net(nn.Module):
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
         self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
         self.conv2_drop = nn.Dropout2d()
+        # linear es Ax + b = y
+        # 320 define la altura de "x" (320x1)
+        # 50 define la altura de "y" (50x1)
+        # Luego "A" la genera pytorch aleatoriamente, pero respetando las dimensiones necesarias. En el ejemplo anterior A sería :
+        # (50x320) (320x1) = (50x1)
+        # B es el bias.
         self.fc1 = nn.Linear(320, 50)
         self.fc2 = nn.Linear(50, 10)
 
     def forward(self, x):
-        import ipdb; ipdb.set_trace()
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
         x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
         x = x.view(-1, 320)
@@ -48,14 +53,6 @@ def plot():
         output.data.max(1, keepdim=True)[1][i].item()))
         plt.xticks([])
         plt.yticks([])
-    plt.show()
-
-def evaluate():
-    plt.plot(train_counter, train_losses, color='blue')
-    plt.scatter(test_counter, test_losses, color='red')
-    plt.legend(['Train Loss', 'Test Loss'], loc='upper right')
-    plt.xlabel('number of training examples seen')
-    plt.ylabel('negative log likelihood loss')
     plt.show()
 
 
@@ -132,6 +129,7 @@ batch_idx, (example_data, example_targets) = next(examples)
 
 
 network = Net()
+
 optimizer = optim.SGD(
     network.parameters(), lr=learning_rate, momentum=momentum)
 train_losses = []
